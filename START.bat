@@ -16,7 +16,7 @@ timeout /t 2
 
 echo [3/3] Starting Admin Dashboard...
 cd ..\admin
-start "ICN Lab Admin" cmd /k "python -m http.server 3001"
+start "ICN Lab Admin" cmd /k "python -m http.server 3002"
 
 echo.
 echo ====================================
@@ -25,7 +25,7 @@ echo ====================================
 echo.
 echo Backend:  http://localhost:5000
 echo Frontend: http://localhost:3000
-echo Admin:    http://localhost:3001/login.html
+echo Admin:    http://localhost:3002/login.html
 echo.
 echo Login: admin@ptit.edu.vn / admin123
 echo.

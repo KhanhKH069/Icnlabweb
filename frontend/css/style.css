@@ -145,6 +145,32 @@ nav {
     transition: color 0.3s var(--ease-out);
 }
 
+.lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 20px;
+}
+
+.lang-switcher img {
+    height: 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    opacity: 0.5;
+    transition: opacity 0.3s var(--ease-out), transform 0.3s ease;
+}
+
+.lang-switcher img:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+}
+
+.lang-switcher img.active {
+    opacity: 1;
+    transform: scale(1.1);
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
 .nav-links a:hover,
 .nav-links a.active {
     color: var(--coral);

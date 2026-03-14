@@ -17,38 +17,46 @@
                 </span>
             </a>
             <ul class="nav-links">
-                <li><a href="index.html">Trang chủ</a></li>
-                <li><a href="about.html">Giới thiệu</a></li>
-                <li><a href="research.html">Nghiên cứu</a></li>
-                <li><a href="projects.html">Dự án</a></li>
-                <li><a href="publications.html" class="active">Công bố</a></li>
-                <li><a href="members.html">Thành viên</a></li>
-                <li><a href="contact.html">Liên hệ</a></li>
+                <li><a href="index.html" data-i18n="nav.home">Trang chủ</a></li>
+                <li><a href="about.html" data-i18n="nav.about">Giới thiệu</a></li>
+                <li><a href="research.html" data-i18n="nav.research">Nghiên cứu</a></li>
+                <li><a href="projects.html" data-i18n="nav.projects">Dự án</a></li>
+                <li><a href="publications.html" class="active" data-i18n="nav.publications">Công bố</a></li>
+                <li><a href="members.html" data-i18n="nav.members">Thành viên</a></li>
+                <li><a href="contact.html" data-i18n="nav.contact">Liên hệ</a></li>
+                <li>
+                    <div class="lang-switcher">
+                        <img src="images/vi.png" alt="VN" data-lang="vi" class="active">
+                        <img src="images/en.png" alt="EN" data-lang="en">
+                    </div>
+                </li>
             </ul>
             <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
         </nav>
     </div>
 
     <header class="page-header">
-        <h1>Công bố khoa học</h1>
-        <p>Đóng góp mới nhất của ICN Lab cho cộng đồng nghiên cứu</p>
+        <h1 data-i18n="publications.title">Công bố khoa học</h1>
+        <p data-i18n="publications.subtitle">Đóng góp mới nhất của ICN Lab cho cộng đồng nghiên cứu</p>
     </header>
 
     <section class="section">
         <div class="publication-list" id="pubList">
-            <div class="loading">Đang tải danh sách công bố...</div>
+            <div class="loading" data-i18n="publications.loading">Đang tải danh sách công bố...</div>
         </div>
     </section>
 
     <footer>
         <div class="footer-content">
-            <div class="footer-about"><h3>ICN Lab - PTIT</h3><p>Intelligently Connected Networks Lab – nghiên cứu các giải pháp cho hệ thống mạng thế hệ mới.</p></div>
-            <div class="footer-links"><h4>Liên kết</h4><ul><li><a href="about.html">Giới thiệu</a></li><li><a href="research.html">Nghiên cứu</a></li><li><a href="projects.html">Dự án</a></li><li><a href="publications.html">Công bố</a></li></ul></div>
-            <div class="footer-contact"><h4>Liên hệ</h4><p>📍 Phòng 06/B15, PTIT</p><p>✉️ icnlab@ptit.edu.vn</p></div>
+            <div class="footer-about"><h3 data-i18n="footer.about.title">ICN Lab - PTIT</h3><p data-i18n="footer.about.desc">Intelligently Connected Networks Lab – nghiên cứu các giải pháp cho hệ thống mạng thế hệ mới.</p></div>
+            <div class="footer-links"><h4 data-i18n="footer.links.title">Liên kết</h4><ul><li><a href="about.html" data-i18n="nav.about">Giới thiệu</a></li><li><a href="research.html" data-i18n="nav.research">Nghiên cứu</a></li><li><a href="projects.html" data-i18n="nav.projects">Dự án</a></li><li><a href="publications.html" data-i18n="nav.publications">Công bố</a></li></ul></div>
+            <div class="footer-contact"><h4 data-i18n="footer.contact.title">Liên hệ</h4><p data-i18n="footer.address.room">📍 Phòng 06/B15, PTIT</p><p>✉️ icnlab@ptit.edu.vn</p></div>
         </div>
-        <div class="footer-bottom"><p>© 2026 ICN Lab - PTIT</p></div>
+        <div class="footer-bottom"><p data-i18n="footer.copyright">© 2026 ICN Lab - PTIT</p></div>
     </footer>
 
+    <script src="js/translations.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="config.js"></script>
     <script src="api.js"></script>
     <script>

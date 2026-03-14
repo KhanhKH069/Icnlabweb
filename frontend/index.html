@@ -17,13 +17,19 @@
                 </span>
             </a>
             <ul class="nav-links">
-                <li><a href="index.html" class="active">Trang chủ</a></li>
-                <li><a href="about.html">Giới thiệu</a></li>
-                <li><a href="research.html">Nghiên cứu</a></li>
-                <li><a href="projects.html">Dự án</a></li>
-                <li><a href="publications.html">Công bố</a></li>
-                <li><a href="members.html">Thành viên</a></li>
-                <li><a href="contact.html">Liên hệ</a></li>
+                <li><a href="index.html" class="active" data-i18n="nav.home">Trang chủ</a></li>
+                <li><a href="about.html" data-i18n="nav.about">Giới thiệu</a></li>
+                <li><a href="research.html" data-i18n="nav.research">Nghiên cứu</a></li>
+                <li><a href="projects.html" data-i18n="nav.projects">Dự án</a></li>
+                <li><a href="publications.html" data-i18n="nav.publications">Công bố</a></li>
+                <li><a href="members.html" data-i18n="nav.members">Thành viên</a></li>
+                <li><a href="contact.html" data-i18n="nav.contact">Liên hệ</a></li>
+                <li>
+                    <div class="lang-switcher">
+                        <img src="images/vi.png" alt="VN" data-lang="vi" class="active">
+                        <img src="images/en.png" alt="EN" data-lang="en">
+                    </div>
+                </li>
             </ul>
             <button class="menu-toggle" id="menuToggle" aria-label="Menu">
                 <span></span><span></span><span></span>
@@ -40,15 +46,15 @@
             <div class="hero-stats">
                 <div class="stat-item">
                     <span class="stat-number">50+</span>
-                    <span class="stat-label">Publications</span>
+                    <span class="stat-label" data-i18n="home.stats.pubs">Publications</span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-number">15+</span>
-                    <span class="stat-label">Projects</span>
+                    <span class="stat-label" data-i18n="home.stats.projects">Projects</span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-number">30+</span>
-                    <span class="stat-label">Researchers</span>
+                    <span class="stat-label" data-i18n="home.stats.researchers">Researchers</span>
                 </div>
             </div>
         </div>
@@ -57,9 +63,9 @@
     <section class="section">
         <div class="intro-content fade-in">
             <div class="intro-text">
-                <h2>Giới thiệu</h2>
-                <p>ICN Lab tập trung nghiên cứu các giải pháp tiên tiến cho hệ thống mạng thế hệ mới, đặc biệt là Edge Computing, IoT và công nghệ 5G/6G.</p>
-                <p><a href="about.html">Xem thêm →</a></p>
+                <h2 data-i18n="home.intro.title">Giới thiệu</h2>
+                <p data-i18n="home.intro.desc">ICN Lab tập trung nghiên cứu các giải pháp tiên tiến cho hệ thống mạng thế hệ mới, đặc biệt là Edge Computing, IoT và công nghệ 5G/6G.</p>
+                <p><a href="about.html" data-i18n="home.intro.link">Xem thêm →</a></p>
             </div>
             <div class="intro-image">
                 <img src="images/logo.png" alt="ICN Lab - Logo lab" class="intro-logo-img" onerror="this.style.display='none'">
@@ -69,38 +75,38 @@
 
     <section class="section">
         <div class="section-header fade-in">
-            <h2 class="section-title">Tin tức mới nhất</h2>
-            <p class="section-subtitle">Cập nhật hoạt động và sự kiện của lab</p>
+            <h2 class="section-title" data-i18n="home.news.title">Tin tức mới nhất</h2>
+            <p class="section-subtitle" data-i18n="home.news.subtitle">Cập nhật hoạt động và sự kiện của lab</p>
         </div>
         <div class="news-grid" id="newsGrid">
-            <div class="loading">Đang tải tin tức...</div>
+            <div class="loading" data-i18n="home.news.loading">Đang tải tin tức...</div>
         </div>
     </section>
 
     <footer>
         <div class="footer-content">
             <div class="footer-about">
-                <h3>ICN Lab - PTIT</h3>
-                <p>Intelligently Connected Networks Lab – nghiên cứu các giải pháp cho hệ thống mạng thế hệ mới.</p>
+                <h3 data-i18n="footer.about.title">ICN Lab - PTIT</h3>
+                <p data-i18n="footer.about.desc">Intelligently Connected Networks Lab – nghiên cứu các giải pháp cho hệ thống mạng thế hệ mới.</p>
             </div>
             <div class="footer-links">
-                <h4>Liên kết</h4>
+                <h4 data-i18n="footer.links.title">Liên kết</h4>
                 <ul>
-                    <li><a href="about.html">Giới thiệu</a></li>
-                    <li><a href="research.html">Nghiên cứu</a></li>
-                    <li><a href="projects.html">Dự án</a></li>
-                    <li><a href="publications.html">Công bố</a></li>
+                    <li><a href="about.html" data-i18n="nav.about">Giới thiệu</a></li>
+                    <li><a href="research.html" data-i18n="nav.research">Nghiên cứu</a></li>
+                    <li><a href="projects.html" data-i18n="nav.projects">Dự án</a></li>
+                    <li><a href="publications.html" data-i18n="nav.publications">Công bố</a></li>
                 </ul>
             </div>
             <div class="footer-contact">
-                <h4>Liên hệ</h4>
-                <p>📍 Phòng 06/B15, PTIT</p>
-                <p>📍 96A Trần Phú, Hà Đông, Hà Nội</p>
+                <h4 data-i18n="footer.contact.title">Liên hệ</h4>
+                <p data-i18n="footer.address.room">📍 Phòng 06/B15, PTIT</p>
+                <p data-i18n="footer.address.street">📍 96A Trần Phú, Hà Đông, Hà Nội</p>
                 <p>✉️ icnlab@ptit.edu.vn</p>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2026 Intelligently Connected Networks Lab - PTIT</p>
+            <p data-i18n="footer.copyright">© 2026 Intelligently Connected Networks Lab - PTIT</p>
         </div>
     </footer>
 
@@ -116,6 +122,8 @@
         }, { threshold: 0.1 });
         document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
     </script>
+    <script src="js/translations.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="config.js"></script>
     <script src="api.js"></script>
     <script>
@@ -126,7 +134,7 @@
             api.getNews({ page: 1, limit: 6 }).then(function(res) {
                 var news = res.data || [];
                 if (news.length === 0) {
-                    grid.innerHTML = '<p class="empty-state">Chưa có tin tức nào.</p>';
+                    grid.innerHTML = '<p class="empty-state" data-i18n="home.news.empty">Chưa có tin tức nào.</p>';
                     return;
                 }
                 grid.innerHTML = news.map(function(item) {
@@ -140,8 +148,9 @@
                 }).join('');
                 var observer = new IntersectionObserver(function(entries) { entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1 });
                 document.querySelectorAll('#newsGrid .fade-in').forEach(function(el) { observer.observe(el); });
+                if (window.i18n) window.i18n.applyTranslations();
             }).catch(function() {
-                grid.innerHTML = '<p class="empty-state">Không tải được tin tức. Kiểm tra Backend đã chạy chưa.</p>';
+                grid.innerHTML = '<p class="empty-state" data-i18n="home.news.error">Không tải được tin tức. Kiểm tra Backend đã chạy chưa.</p>';
             });
         })();
     </script>
