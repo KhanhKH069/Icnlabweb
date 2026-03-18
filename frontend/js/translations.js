@@ -104,9 +104,54 @@ const TRANSLATIONS = {
     'research.focus.3.desc': { vi: 'Nghiên cứu đổi mới hướng edge: khung truyền thông ngữ nghĩa ưu tiên truyền thông tin có ý nghĩa, hệ thống ISAC (Integrated Sensing and Communication), và kiến trúc mạng tối ưu cho edge.', en: 'Edge-oriented research: semantic communication frameworks prioritizing meaningful information, ISAC (Integrated Sensing and Communication) systems, and optimized network architectures for edge computing.' },
 
     // Members Page - categories
-    'members.cat.leaders': { vi: 'Lãnh đạo', en: 'Leadership' },
-    'members.cat.faculty': { vi: 'Giảng viên', en: 'Faculty' },
-    'members.cat.students': { vi: 'Nghiên cứu sinh & Sinh viên', en: 'PhD Students & Undergrads' },
+    'members.cat.leaders': { vi: 'Lãnh đạo phòng thí nghiệm', en: 'Leadership' },
+    'members.cat.faculty': { vi: 'Cộng tác & Giáo sư hợp tác', en: 'Collaborators' },
+    'members.cat.students': { vi: 'Nghiên cứu sinh & Sinh viên', en: 'PhD, MSc & Undergraduate Students' },
+
+    // Members Page - positions (lab roles)
+    'members.position.professor': {
+        vi: 'Trưởng phòng thí nghiệm',
+        en: 'Head of Laboratory'
+    },
+    'members.position.associate_professor': {
+        vi: 'Phó trưởng phòng thí nghiệm',
+        en: 'Deputy Head of Laboratory'
+    },
+    'members.position.assistant_professor': {
+        vi: 'Giảng viên / Nhà nghiên cứu hợp tác',
+        en: 'Collaborating Faculty / Researcher'
+    },
+    'members.position.postdoc': {
+        vi: 'Nghiên cứu viên sau tiến sĩ (cộng tác)',
+        en: 'Postdoctoral Collaborator'
+    },
+    'members.position.phd_student': {
+        vi: 'Nghiên cứu sinh (PhD Student)',
+        en: 'PhD Student'
+    },
+    'members.position.master_student': {
+        vi: 'Học viên cao học (MSc Student)',
+        en: 'MSc Student'
+    },
+    'members.position.undergraduate': {
+        vi: 'Sinh viên đại học',
+        en: 'Undergraduate Student'
+    },
+    'members.position.research_assistant': {
+        vi: 'Trợ lý nghiên cứu',
+        en: 'Research Assistant'
+    },
+    'members.position.collaborator': {
+        vi: 'Giáo sư/nhà nghiên cứu cộng tác',
+        en: 'Collaborating Professor / Researcher'
+    },
+
+    // Members Page - academic titles
+    'members.title.prof': { vi: 'GS.', en: 'Prof.' },
+    'members.title.assoc_prof': { vi: 'PGS.', en: 'Assoc. Prof.' },
+    'members.title.dr': { vi: 'TS.', en: 'Dr.' },
+    'members.title.msc': { vi: 'ThS.', en: 'MSc' },
+    'members.title.bsc': { vi: 'CN.', en: 'BSc' },
 
     // Contact Page - missing keys
     'contact.info.address.room': { vi: 'Phòng 06/B15, Tòa B15, Học viện Công nghệ Bưu chính Viễn thông', en: 'Room 06/B15, Building B15, Posts and Telecommunications Institute of Technology' },

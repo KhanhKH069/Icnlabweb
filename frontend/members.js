@@ -1,23 +1,31 @@
 // Members Display Script
+let loadedMembers = null;
 
-// Position mapping
-const positionLabels = {
-    'professor': 'Giáo sư',
-    'associate_professor': 'Phó Giáo sư',
-    'assistant_professor': 'Giảng viên',
-    'postdoc': 'Nghiên cứu sau tiến sĩ',
-    'phd_student': 'Nghiên cứu sinh',
-    'master_student': 'Học viên Thạc sĩ',
-    'undergraduate': 'Sinh viên',
-    'research_assistant': 'Trợ lý nghiên cứu',
-    'collaborator': 'Cộng tác viên'
-};
+// Position / Lab role mapping (use i18n if available)
+function getPositionLabel(positionKey) {
+    if (window.i18n && window.i18n.t) {
+        const translated = window.i18n.t(`members.position.${positionKey}`);
+        if (translated && translated !== `members.position.${positionKey}`) return translated;
+    }
+    const fallback = {
+        professor: 'Trưởng phòng thí nghiệm',
+        associate_professor: 'Phó trưởng phòng thí nghiệm',
+        assistant_professor: 'Giảng viên / Nhà nghiên cứu hợp tác',
+        postdoc: 'Nghiên cứu viên sau tiến sĩ (cộng tác)',
+        phd_student: 'Nghiên cứu sinh (PhD Student)',
+        master_student: 'Học viên cao học (MSc Student)',
+        undergraduate: 'Sinh viên đại học',
+        research_assistant: 'Trợ lý nghiên cứu',
+        collaborator: 'Giáo sư/nhà nghiên cứu cộng tác'
+    };
+    return fallback[positionKey] || positionKey;
+}
 
-// Categorize positions
+// Categorize positions: Leadership / Collaborators / Students
 const positionCategories = {
     leaders: ['professor', 'associate_professor'],
-    faculty: ['assistant_professor', 'postdoc'],
-    students: ['phd_student', 'master_student', 'undergraduate', 'research_assistant', 'collaborator']
+    faculty: ['assistant_professor', 'postdoc', 'collaborator'],
+    students: ['phd_student', 'master_student', 'undergraduate', 'research_assistant']
 };
 
 // Get initials from name
@@ -30,10 +38,32 @@ function getInitials(name) {
         .toUpperCase();
 }
 
-// Build degree + affiliation line for card and detail
+// Build academic titles + affiliation line for card and detail
 function getDegreeAffiliationLine(member) {
     const parts = [];
-    if (member.academicTitle) parts.push(member.academicTitle);
+    // New: support multiple academic titles (codes) if provided
+    let titles = [];
+    if (Array.isArray(member.academicTitles) && member.academicTitles.length > 0) {
+        titles = member.academicTitles.map(code => {
+            if (window.i18n && window.i18n.t) {
+                const label = window.i18n.t(`members.title.${code}`);
+                if (label && label !== `members.title.${code}`) return label;
+            }
+            const fallback = {
+                prof: 'Prof.',
+                assoc_prof: 'Assoc. Prof.',
+                dr: 'Dr.',
+                msc: 'MSc',
+                bsc: 'BSc'
+            };
+            return fallback[code] || code;
+        });
+    } else if (member.academicTitle) {
+        // Backwards compatibility: old single string
+        titles = [member.academicTitle];
+    }
+
+    if (titles.length) parts.push(titles.join(', '));
     if (member.affiliation) parts.push(member.affiliation);
     return parts.length ? parts.join(' · ') : '';
 }
@@ -41,7 +71,7 @@ function getDegreeAffiliationLine(member) {
 // Create member card HTML (clickable -> full detail)
 function createMemberCard(member) {
     const initials = getInitials(member.name);
-    const position = positionLabels[member.position] || member.position;
+    const position = getPositionLabel(member.position);
     const degreeAffiliation = getDegreeAffiliationLine(member);
 
     // Photo
@@ -98,39 +128,49 @@ async function loadMembers() {
     try {
         const response = await api.getMembers({ isAlumni: false });
         const members = response.data;
+        loadedMembers = members;
         
         if (!members || members.length === 0) {
             showEmptyState();
             return;
         }
         
-        // Categorize members
-        const categorized = {
-            leaders: [],
-            faculty: [],
-            students: []
-        };
-        
-        members.forEach(member => {
-            if (positionCategories.leaders.includes(member.position)) {
-                categorized.leaders.push(member);
-            } else if (positionCategories.faculty.includes(member.position)) {
-                categorized.faculty.push(member);
-            } else if (positionCategories.students.includes(member.position)) {
-                categorized.students.push(member);
-            }
-        });
-        
-        // Display each category
-        displayCategory('leadersGrid', categorized.leaders);
-        displayCategory('facultyGrid', categorized.faculty);
-        displayCategory('studentsGrid', categorized.students);
+        renderMembersByCategory(members);
         
     } catch (error) {
         console.error('Error loading members:', error);
         showErrorState();
     }
 }
+
+function renderMembersByCategory(members) {
+    const categorized = {
+        leaders: [],
+        faculty: [],
+        students: []
+    };
+    
+    members.forEach(member => {
+        if (positionCategories.leaders.includes(member.position)) {
+            categorized.leaders.push(member);
+        } else if (positionCategories.faculty.includes(member.position)) {
+            categorized.faculty.push(member);
+        } else if (positionCategories.students.includes(member.position)) {
+            categorized.students.push(member);
+        }
+    });
+    
+    displayCategory('leadersGrid', categorized.leaders);
+    displayCategory('facultyGrid', categorized.faculty);
+    displayCategory('studentsGrid', categorized.students);
+}
+
+// Expose re-render helper for language switching
+window.rerenderMembersForLanguage = function () {
+    if (loadedMembers && Array.isArray(loadedMembers) && loadedMembers.length > 0) {
+        renderMembersByCategory(loadedMembers);
+    }
+};
 
 // Display category
 function displayCategory(gridId, members) {
@@ -155,7 +195,7 @@ function openMemberDetail(id) {
     api.getMemberById(id)
         .then(res => {
             const m = res.data;
-            const position = positionLabels[m.position] || m.position;
+            const position = getPositionLabel(m.position);
             const degreeAffiliation = getDegreeAffiliationLine(m);
 
             let photoHTML;

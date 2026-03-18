@@ -26,6 +26,10 @@ const memberSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    academicTitles: [{
+        type: String,
+        trim: true
+    }],
     affiliation: {
         type: String,
         trim: true

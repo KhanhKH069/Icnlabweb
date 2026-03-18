@@ -37,6 +37,11 @@ function applyTranslations() {
             el.placeholder = TRANSLATIONS[key][currentLang];
         }
     });
+
+    // Notify other scripts (e.g., members page) so they can re-render dynamic text
+    if (typeof window.rerenderMembersForLanguage === 'function') {
+        window.rerenderMembersForLanguage();
+    }
 }
 
 function updateFlagUI() {

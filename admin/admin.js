@@ -686,10 +686,14 @@ async function loadMembers() {
         }
 
         const positionLabels = {
-            professor: 'Professor', associate_professor: 'Assoc. Prof.',
-            assistant_professor: 'Asst. Prof.', postdoc: 'Postdoc',
-            phd_student: 'PhD Student', master_student: 'Master Student',
-            undergraduate: 'Undergraduate', research_assistant: 'Research Assistant',
+            professor: 'Head of Laboratory',
+            associate_professor: 'Deputy Head',
+            assistant_professor: 'Faculty Member',
+            postdoc: 'Postdoctoral Researcher',
+            phd_student: 'PhD Student',
+            master_student: 'Master Student',
+            undergraduate: 'Undergraduate Student',
+            research_assistant: 'Research Assistant',
             collaborator: 'Collaborator'
         };
 
@@ -743,29 +747,43 @@ function openMemberModal(id = null) {
                 <input type="email" name="email" required id="member-email">
             </div>
             <div class="form-group">
-                <label>Position *</label>
+                <label>Position / Lab Role *</label>
                 <select name="position" required id="member-position">
-                    <option value="professor">Professor</option>
-                    <option value="associate_professor">Associate Professor</option>
-                    <option value="assistant_professor">Assistant Professor</option>
-                    <option value="postdoc">Postdoc</option>
+                    <option value="professor">Head of Laboratory</option>
+                    <option value="associate_professor">Deputy Head</option>
+                    <option value="assistant_professor">Faculty Member</option>
+                    <option value="postdoc">Postdoctoral Researcher</option>
                     <option value="phd_student">PhD Student</option>
                     <option value="master_student">Master Student</option>
-                    <option value="undergraduate">Undergraduate</option>
+                    <option value="undergraduate">Undergraduate Student</option>
                     <option value="research_assistant">Research Assistant</option>
                     <option value="collaborator">Collaborator</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>Học vị (Academic Title)</label>
-                <select name="academicTitle" id="member-academicTitle">
-                    <option value="">— Chọn —</option>
-                    <option value="Prof.">Prof.</option>
-                    <option value="Assoc. Prof.">Assoc. Prof.</option>
-                    <option value="Dr.">Dr.</option>
-                    <option value="MSc">MSc</option>
-                    <option value="BSc">BSc</option>
+                <label>Học vị (Academic Title 1)</label>
+                <select name="academicTitle1" id="member-academicTitle1">
+                    <option value="">— None —</option>
+                    <option value="prof">Prof.</option>
+                    <option value="assoc_prof">Assoc. Prof.</option>
+                    <option value="dr">Dr.</option>
+                    <option value="msc">MSc</option>
+                    <option value="bsc">BSc</option>
                 </select>
+            </div>
+            <div class="form-group">
+                <label>Học vị (Academic Title 2)</label>
+                <select name="academicTitle2" id="member-academicTitle2">
+                    <option value="">— None —</option>
+                    <option value="prof">Prof.</option>
+                    <option value="assoc_prof">Assoc. Prof.</option>
+                    <option value="dr">Dr.</option>
+                    <option value="msc">MSc</option>
+                    <option value="bsc">BSc</option>
+                </select>
+                <small style="color: var(--gray); font-size: 0.85rem;">
+                    Nếu chỉ có một học vị thì chọn ở ô thứ nhất, để trống ô thứ hai.
+                </small>
             </div>
             <div class="form-group">
                 <label>Trường / Đơn vị (Affiliation)</label>
@@ -830,7 +848,20 @@ async function loadMemberData(id) {
         document.getElementById('member-name').value = m.name || '';
         document.getElementById('member-email').value = m.email || '';
         document.getElementById('member-position').value = m.position || 'undergraduate';
-        document.getElementById('member-academicTitle').value = m.academicTitle || '';
+
+        const academicCodes = Array.isArray(m.academicTitles) ? m.academicTitles.slice(0, 2) : [];
+        // Fallback: try to guess from single academicTitle string if no codes saved
+        if (!academicCodes.length && m.academicTitle) {
+            const lower = m.academicTitle.toLowerCase();
+            if (lower.includes('prof')) {
+                academicCodes.push(lower.includes('assoc') ? 'assoc_prof' : 'prof');
+            }
+            if (lower.includes('dr')) academicCodes.push('dr');
+            if (lower.includes('msc')) academicCodes.push('msc');
+            if (lower.includes('bsc')) academicCodes.push('bsc');
+        }
+        document.getElementById('member-academicTitle1').value = academicCodes[0] || '';
+        document.getElementById('member-academicTitle2').value = academicCodes[1] || '';
         document.getElementById('member-affiliation').value = m.affiliation || '';
         document.getElementById('member-bio').value = m.bio || '';
         document.getElementById('member-interests').value = (m.researchInterests || []).join(', ');
@@ -851,6 +882,23 @@ async function saveMember(event, id) {
     const form = event.target;
     const formData = new FormData(form);
 
+    // Academic titles: at most 2 codes
+    const titleCodes = [];
+    if (form.academicTitle1.value) titleCodes.push(form.academicTitle1.value);
+    if (form.academicTitle2.value && form.academicTitle2.value !== form.academicTitle1.value) {
+        titleCodes.push(form.academicTitle2.value);
+    }
+    formData.set('academicTitles', JSON.stringify(titleCodes));
+
+    const titleLabelMap = {
+        prof: 'Prof.',
+        assoc_prof: 'Assoc. Prof.',
+        dr: 'Dr.',
+        msc: 'MSc',
+        bsc: 'BSc'
+    };
+    const titleLabels = titleCodes.map(c => titleLabelMap[c] || c);
+    formData.set('academicTitle', titleLabels.join(', '));
     const interests = form.researchInterests.value
         ? form.researchInterests.value.split(',').map(s => s.trim()).filter(Boolean)
         : [];

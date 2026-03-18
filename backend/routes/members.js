@@ -91,6 +91,13 @@ router.post('/',
                     // ignore parse error, keep as is
                 }
             }
+            if (typeof req.body.academicTitles === 'string') {
+                try {
+                    req.body.academicTitles = JSON.parse(req.body.academicTitles);
+                } catch (e) {
+                    req.body.academicTitles = [];
+                }
+            }
         }
         next();
     },
@@ -125,6 +132,7 @@ router.post('/',
                 phone: req.body.phone,
                 position: req.body.position,
                 academicTitle: req.body.academicTitle,
+                academicTitles: req.body.academicTitles || [],
                 affiliation: req.body.affiliation,
                 bio: req.body.bio,
                 researchInterests: req.body.researchInterests || [],
@@ -184,6 +192,13 @@ router.put('/:id',
                     // ignore parse error, keep as is
                 }
             }
+            if (typeof req.body.academicTitles === 'string') {
+                try {
+                    req.body.academicTitles = JSON.parse(req.body.academicTitles);
+                } catch (e) {
+                    req.body.academicTitles = [];
+                }
+            }
         }
         next();
     },
@@ -211,7 +226,7 @@ router.put('/:id',
             }
 
             const updateFields = [
-                'name', 'email', 'phone', 'position', 'academicTitle', 'affiliation', 'bio', 'researchInterests',
+                'name', 'email', 'phone', 'position', 'academicTitle', 'academicTitles', 'affiliation', 'bio', 'researchInterests',
                 'education', 'socialLinks', 'joinDate', 'isActive', 'isAlumni', 'order'
             ];
             

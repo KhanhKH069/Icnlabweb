@@ -60,6 +60,14 @@
         </div>
     </section>
 
+    <!-- News detail modal -->
+    <div class="modal-overlay" id="newsDetailModal" aria-hidden="true">
+        <div class="modal-box" id="newsDetailBox">
+            <button type="button" class="modal-close" onclick="closeNewsDetail()" aria-label="Đóng">×</button>
+            <div id="newsDetailContent"></div>
+        </div>
+    </div>
+
     <section class="section">
         <div class="intro-content fade-in">
             <div class="intro-text">
@@ -127,6 +135,40 @@
     <script src="config.js"></script>
     <script src="api.js"></script>
     <script>
+        function openNewsDetail(id) {
+            var modal = document.getElementById('newsDetailModal');
+            var content = document.getElementById('newsDetailContent');
+            if (!modal || !content) return;
+            content.innerHTML = '<div class="loading">Đang tải...</div>';
+            modal.classList.add('show');
+
+            var baseUrl = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL.replace('/api', '') : 'http://localhost:5000';
+
+            api.getNewsById(id).then(function(res) {
+                var n = res.data || {};
+                var dateStr = n.publishedDate ? new Date(n.publishedDate).toLocaleDateString('vi-VN') : '';
+                var imgHtml = n.image ? '<div class="news-image"><img src="' + baseUrl + n.image + '" alt=""></div>' : '';
+                var tagsHtml = (n.tags && n.tags.length)
+                    ? '<p style="margin-top:1rem; font-size:0.9rem; color:#666;">Tags: ' + n.tags.join(', ') + '</p>'
+                    : '';
+                content.innerHTML =
+                    imgHtml +
+                    '<div class="news-content">' +
+                    '<div class="news-date">' + dateStr + '</div>' +
+                    '<h2 style="margin-bottom:0.75rem;">' + (n.title || '') + '</h2>' +
+                    '<div style="font-size:0.98rem; line-height:1.7; white-space:pre-wrap;">' + (n.content || '') + '</div>' +
+                    tagsHtml +
+                    '</div>';
+            }).catch(function() {
+                content.innerHTML = '<div class="empty-state">Không tải được nội dung tin tức.</div>';
+            });
+        }
+
+        function closeNewsDetail() {
+            var modal = document.getElementById('newsDetailModal');
+            if (modal) modal.classList.remove('show');
+        }
+
         (function loadNews() {
             var grid = document.getElementById('newsGrid');
             if (!grid) return;
@@ -144,11 +186,38 @@
                     var imgHtml = item.image
                         ? '<img src="' + baseUrl + item.image + '" alt="">'
                         : '';
-                    return '<div class="news-card fade-in"><div class="news-image">' + imgHtml + '</div><div class="news-content"><div class="news-date">' + dateStr + '</div><h4>' + (item.title || '') + '</h4><p>' + (excerpt || '') + '</p></div></div>';
+                    return '<div class="news-card fade-in" data-news-id="' + item._id + '" tabindex="0"><div class="news-image">' + imgHtml + '</div><div class="news-content"><div class="news-date">' + dateStr + '</div><h4>' + (item.title || '') + '</h4><p>' + (excerpt || '') + '</p></div></div>';
                 }).join('');
                 var observer = new IntersectionObserver(function(entries) { entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1 });
                 document.querySelectorAll('#newsGrid .fade-in').forEach(function(el) { observer.observe(el); });
                 if (window.i18n) window.i18n.applyTranslations();
+
+                // Click / keyboard to open detail
+                grid.addEventListener('click', function(e) {
+                    var card = e.target.closest('.news-card');
+                    if (card && card.dataset.newsId) {
+                        openNewsDetail(card.dataset.newsId);
+                    }
+                });
+                grid.addEventListener('keydown', function(e) {
+                    if (e.key !== 'Enter' && e.key !== ' ') return;
+                    var card = e.target.closest('.news-card');
+                    if (card && card.dataset.newsId) {
+                        e.preventDefault();
+                        openNewsDetail(card.dataset.newsId);
+                    }
+                });
+
+                // Close modal on overlay click / Escape
+                var modal = document.getElementById('newsDetailModal');
+                if (modal) {
+                    modal.addEventListener('click', function(e) {
+                        if (e.target === modal) closeNewsDetail();
+                    });
+                }
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') closeNewsDetail();
+                });
             }).catch(function() {
                 grid.innerHTML = '<p class="empty-state" data-i18n="home.news.error">Không tải được tin tức. Kiểm tra Backend đã chạy chưa.</p>';
             });
